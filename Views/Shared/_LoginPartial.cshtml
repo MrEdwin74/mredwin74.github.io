@@ -1,0 +1,40 @@
+@using Microsoft.AspNetCore.Identity
+@using Ex1.Models
+@using System.Security.Claims
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <form asp-area="" asp-controller="Account" asp-action="LogOff" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @{
+                     //var imgUrl = Url.Content("~/images/profiles/" + UserManager.GetUserName(User) + ".png") + "?time=" + DateTime.Now.ToString();
+                     var imgUrl = Url.Content("~/images/profiles/" + UserManager.GetUserId(User) + ".png") + "?time=" + DateTime.Now.ToString();
+                    if (imgUrl == "")
+                    {
+                        imgUrl = Url.Content("~/images/profiles/PictureNotAvailable.gif") + "?time=" + DateTime.Now.ToString();
+                    }
+                    
+                    var fecha = DateTime.Now.ToString("dd-MM-yyyy");
+                 }
+                <img style="border-radius: 20px" src="@imgUrl" height="40" width="40" />
+            </li>
+            <li>
+                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+            </li>
+            <li>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log off</button>
+            </li>
+        </ul>
+    </form>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li><a asp-area="" asp-controller="Account" asp-action="Register">Register</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="Login">Log in</a></li>
+    </ul>
+}

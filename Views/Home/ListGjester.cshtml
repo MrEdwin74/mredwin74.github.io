@@ -1,0 +1,81 @@
+@model Ex1.Models.ListGjesterViewModel
+@{
+    ViewData["Title"] = "Guest Book";
+}
+<div class="row" style="padding-bottom: 20px; margin-left: 20px; margin-right: 20px;">
+    <div class="col-md-8">
+        <img src="~/images/book.png" style="padding-top: 20px;">
+        <h2>@ViewData["Title"]</h2>
+    </div>
+    <div class="col-md-8">
+        <table class="table table-striped">
+            @foreach(var s in Model.Gjester)
+            {
+                <tr>
+                    <td>
+                    <h4>@s.txtTittel</h4>
+                    <p>@s.txtMessage</p>
+                    <p style="text-align: right;">@s.gName</p>
+                </tr>
+            }
+        </table>
+    </div>
+    @if (User.IsInRole("Admin") || User.IsInRole("User"))
+    { 
+        <div class="col-md-4">       
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Leave A Comment
+                </div>
+                <div class="panel-body">         
+                    <form class="form-groups" asp-controller="Home" asp-action="ListGjester" method="post">
+                        <!-- Name -->
+                        <div class="form-group">
+                            <label for="message" class="col-sm-4 control-label">Name</label>
+                            <div class="col-sm-8" style="padding-bottom: 5px">
+                                <!-- input type="text" class="form-control" name="name" -->
+                                <input type="text" class="form-control" asp-for="Gjest.gName">
+                            </div>
+                        </div>
+                        <!-- Title -->
+                        <div class="form-group">
+                            <label for="message" class="col-sm-4 control-label">Title</label>
+                            <div class="col-sm-8" style="padding-bottom: 5px">
+                                <!-- input type="text" class="form-control" name="tittel" -->
+                                <input type="text" class="form-control" asp-for="Gjest.txtTittel">
+                            </div>
+                        </div>
+                        <!-- Textarea -->
+                        <div class="form-group">
+                            <label for="message" class="col-sm-4 control-label">Message</label>
+                            <div class="col-sm-8" style="padding-bottom: 5px">
+                                <!-- textarea class="form-control" rows="4" name="message"></textarea -->
+                                <textarea class="form-control" rows="4" asp-for="Gjest.txtMessage"></textarea>
+                            </div>
+                        </div>
+                        <!-- Button -->
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-8" style="text-align: right;">
+                                <input type="submit" class="btn btn-primary" >
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="col-md-4">      
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                Leave A Comment
+                </div>
+                <div class="panel-body">         
+                    <h3> Log to get access to guest book </h3>
+                    <a asp-area="" asp-controller="Account" asp-action="Login">Log in</a>  
+                </div>
+            </div>
+        </div>        
+    }
+</div>
